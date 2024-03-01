@@ -1,0 +1,610 @@
+html {
+    --typeWriterSpeed: 2.5s;
+    --typeWriterDelay: 2s;
+    --figuresContainerDelay: calc(var(--typeWriterDelay) + var(--typeWriterSpeed) + 0.5s);
+    --figuresContainerSpeed: 0.8s;
+    --balanceTextDelay: calc(var(--figuresContainerDelay) + var(--figuresContainerSpeed) + 0.5s);
+}
+
+body {
+    margin: 0px;
+}
+
+#root {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        "products digitalScreen"
+        "products keypad"
+        "products money";
+    background-color: #333;
+    position: relative;
+}
+
+/* Products */
+#products {
+    grid-area: products;
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-template-rows: repeat(4, 25%);
+    border: 5px solid black;
+    border-radius: 10px;
+}
+
+.productContainer {
+    display: grid;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px solid;
+    border-radius: 10px;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    background-color: cadetblue;
+}
+
+.productContainer:hover {
+    /* Add hover effect */
+    background-color: hsl(182, 25%, 70%);
+}
+
+.product-pack {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(4, 25%);
+    grid-template-rows: 75% 25%;
+}
+
+.product-image {
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    grid-column: 1/5; /* Adjust the number of columns the image spans */
+    grid-row: 1;
+    background-color: white;
+}
+
+.product-id {
+    margin: 0px;
+    font-size: 16px;
+    text-align: center;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.product-price {
+    margin: 0px;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.product-stock {
+    margin: 0px;
+    grid-column: 4;
+    grid-row: 2;
+}
+
+#requestedProduct {
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70% 30%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    animation: 1s forwards showUp, 1s forwards 3s disappear;
+}
+
+#requestedProduct img {
+    grid-row: 1;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 4px solid black;
+    border-top-left-radius: 20%;
+    border-top-right-radius: 20%;
+    background-color: aquamarine;
+    animation: 1s forwards colorWave;
+}
+
+#requestedProduct p {
+    grid-row: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+    border: 4px solid black;
+    border-top: none;
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    font-size: 30px;
+    background-color: white;
+}
+
+/* Digital screen */
+
+#screen {
+    grid-area: digitalScreen;
+}
+
+#digitalScreen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    box-sizing: border-box;
+    border: 5px solid black;
+    border-radius: 20px;
+    background-color: greenyellow;
+}
+
+/* Text styles */
+
+.firstText {
+    grid-row: 1;
+    grid-column: 1/4;
+    box-sizing: content-box;
+    margin-left: 10px;
+    width: fit-content;
+    height: fit-content;
+    font-family: "Source Code Pro", monospace;
+    font-size: 30px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.secondText {
+    grid-row: 3;
+    grid-column: 1/ 4;
+    box-sizing: border-box;
+    margin-left: 10px;
+    width: fit-content;
+    height: fit-content;
+    white-space: nowrap;
+    font-family: "Anonymous Pro", monospace;
+    font-size: 30px;
+    position: relative;
+}
+
+.thirdText {
+    grid-row: 2;
+    grid-column: 1/ 4;
+    box-sizing: border-box;
+    margin-left: 10px;
+    width: fit-content;
+    height: fit-content;
+    white-space: nowrap;
+    font-family: "Anonymous Pro", monospace;
+    font-size: 30px;
+    position: relative;
+}
+
+.textChild {
+    box-sizing: border-box;
+    position: absolute;
+    border-left: 3px solid black;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: greenyellow;
+}
+
+/* Pending dots */
+
+.pendingDots {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin: 0.4rem;
+    margin-left: 0.35rem;
+    box-sizing: border-box;
+    border-radius: 50%;
+    transform: scale(0.5);
+    background-color: black;
+    position: relative;
+    top: 8px;
+    right: 3px;
+}
+
+#pendingDot1 {
+    animation-delay: 0.6s;
+}
+
+#pendingDot2 {
+    animation-delay: 0.9s;
+}
+
+#pendingDot3 {
+    animation-delay: 1.2s;
+}
+
+/* ID container */
+
+.pointer {
+    grid-row: 1;
+    width: 0;
+    height: 0;
+    border-top: 10px solid black;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    animation: 1s linear 0.5s infinite alternate point;
+}
+
+.figuresContainer {
+    grid-row: 2;
+    grid-column: 1/3;
+    box-sizing: border-box;
+    border: 10px solid;
+    margin-left: 10px;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-items: center;
+    background-color: gold;
+    opacity: 0;
+    animation: showFiguresContainer var(--figuresContainerSpeed) 3.7s forwards;
+}
+
+.figureContainers {
+    width: 80%;
+    height: 80%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    margin: 0px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    background-color: white;
+}
+
+#figContainer1 {
+    grid-column: 1/2;
+    grid-row: 2;
+}
+
+#figContainer2 {
+    grid-column: 2/3;
+    grid-row: 2;
+}
+
+.figures {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    box-sizing: border-box;
+    border-bottom: 2px solid black;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+}
+
+.digits {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 35px;
+}
+
+/* Keypad */
+.parentButtons {
+    display: flex;
+    flex-wrap: row nowrap;
+    box-sizing: border-box;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+}
+
+.keyButtons {
+    display: flex;
+    width: 70%;
+    height: 80%;
+    flex-wrap: row nowrap;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(225, 225, 225);
+}
+
+.keyButtons:hover {
+    background-color: hsl(0, 0%, 95%);
+    cursor: pointer;
+}
+
+.keyButtons:active {
+    background-color: hsl(0, 0%, 80%);
+}
+
+#keypad {
+    grid-area: keypad;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-areas:
+        "key1 key2 key3"
+        "key4 key5 key6"
+        "key7 key8 key9"
+        "change key0 enter"
+        "back emptySpace next";
+    border: 4px solid black;
+    border-radius: 30px;
+    background-color: gray;
+}
+
+#key1 {
+    grid-area: key1;
+    border-top: none;
+    border-left: none;
+}
+
+#key2 {
+    border-top: 0px;
+    grid-area: key2;
+}
+
+#key3 {
+    grid-area: key3;
+    border-top: none;
+    border-right: none;
+}
+
+#key4 {
+    grid-area: key4;
+}
+
+#key5 {
+    grid-area: key5;
+}
+
+#key6 {
+    grid-area: key6;
+}
+
+#key7 {
+    grid-area: key7;
+}
+
+#key8 {
+    grid-area: key8;
+}
+
+#key9 {
+    grid-area: key9;
+}
+
+#key0 {
+    grid-area: key0;
+}
+
+#keyDelete {
+    grid-area: change;
+    border-bottom: none;
+    border-left: none;
+}
+
+#keyEnter {
+    grid-area: enter;
+    border-right: none;
+}
+
+#keyBack {
+    grid-area: back;
+    border-bottom: none;
+    border-left: none;
+}
+
+#keyEmptySpace {
+    grid-area: emptySpace;
+    border-bottom: none;
+}
+
+#keyNext {
+    grid-area: next;
+    border-bottom: none;
+    border-right: none;
+}
+
+/* Money */
+#money {
+    grid-area: money;
+    display: flex;
+    margin: 0px;
+    flex-wrap: row nowrap;
+    box-sizing: border-box;
+    border: 1px solid blacxk;
+    align-items: center;
+    justify-content: space-around;
+    /* opacity: 0; */
+}
+
+.bankContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 30%;
+    opacity: 0;
+}
+
+.bank-note {
+    width: 100%;
+    height: 100%;
+}
+
+.bank-note:hover {
+    transform: translate(0, -50px) scale(1.2);
+    cursor: pointer;
+}
+
+/* Animations */
+
+/* Animations for text */
+
+/* Typewriter effect animations */
+@keyframes typewriter {
+    to {
+        left: 100%;
+    }
+}
+@keyframes blinkBorder {
+    49.9% {
+        border-left: hidden;
+    }
+    50% {
+        border-left: visible;
+    }
+}
+
+/* Figures container animations */
+@keyframes showFiguresContainer {
+    0% {
+        opacity: 0;
+        scale: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes flicker {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes point {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Animations for cash */
+
+@keyframes displayCash {
+    0% {
+        transform: scale(0) rotateY(0);
+    }
+    70% {
+        transform: scale(1.3) rotateY(720deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotateY(1080deg);
+        opacity: 1;
+    }
+}
+
+@keyframes cashClicked {
+    0% {
+        transform: translate(0, -50px) scale(1.2);
+    }
+    50% {
+        transform: translate(0, -50vh) rotateY(0deg) scale(1);
+    }
+    60% {
+        transform: translate(0, -50vh) rotateY(1080deg) scale(0);
+    }
+    100% {
+        transform: translate(0, 0vh) scale(0);
+    }
+}
+
+@keyframes cashIn {
+    50% {
+        transform: translate(0, -50vh) rotateY(180deg);
+    }
+    100% {
+        transform: translate(0, 0vh) rotateY(270deg);
+    }
+}
+
+@keyframes cashBack {
+    0% {
+        transform: scale(0) rotateY(0);
+    }
+    70% {
+        transform: scale(1.3) rotateY(720deg);
+    }
+    100% {
+        transform: scale(1) rotateY(720deg);
+    }
+}
+
+/* Animation for pending */
+@keyframes pending {
+    0%,
+    100% {
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+/* Animation to display product */
+@keyframes showUp {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes colorWave {
+    0% {
+        background-color: hsl(180, 100%, 10%);
+    }
+    50% {
+        background-color: hsl(180, 100%, 40%);
+    }
+    100% {
+        background-color: hsl(180, 100%, 90%);
+    }
+}
+
+@keyframes disappear {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    90% {
+        transform: translate(-50%, -50%) scale(1.8);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
