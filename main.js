@@ -3,7 +3,7 @@ class Model {
         // The balance
         this.balance = 0;
         // The array with all the products objects linked to the local storage
-        this.products = JSON.parse(localStorage.getItem("products"));
+        this.products = JSON.parse(localStorage.getItem("products")) || [];
     }
 
     // Product methods
@@ -238,12 +238,12 @@ class View {
         while (this.products.firstChild) {
             this.products.removeChild(this.products.firstChild);
         }
-        if (products.length === 0) {
+        if (products?.length === 0) {
             const soldOutMessage = this.createElement("p", "soldOutMessage");
             soldOutMessage.textContent = "Everything is sold out! We are sorry!";
             this.products.append(soldOutMessage);
         } else {
-            products.forEach((product) => {
+            products?.forEach((product) => {
                 // Creates a product container
                 this.productContainer = this.createElement("div", "productContainer");
 
@@ -691,8 +691,7 @@ class Controller {
     handleID = (productID) => {
         this.model.getProduct(productID);
     };
-
-    handleUpdateBalance = (balance) => {
+handleUpdateBalance = (balance) => {
         this.view.displayBalanceText(balance);
     };
 }
